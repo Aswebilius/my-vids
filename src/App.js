@@ -7,8 +7,16 @@ import youtube from './api/youtube';
 
 class App extends React.Component {
     state = {
-        video: [ ],
+        videos: [ ],
         selectedVideo: null,
+    }
+    
+    componentDidMount(){
+        this.handleSubmit('Web Development Career')
+    }
+
+    onVideoSelect =(video) => {
+        this.setState({ selectedVideo: video });
     }
 
     handleSubmit = async (searchTerm) => {
@@ -23,23 +31,23 @@ class App extends React.Component {
         this.setState({ videos: response.data.items, selectedVideo: response.data.items[0] });
     }
     render() {
-        const { selectedVideo } = this.state;
+        const { selectedVideo, videos } = this.state;
         return (
             <Grid justifyContent="center" container spacing={10}>
                 <Grid item xs={12}>
                     <Grid container spacing={10}>
                         <Grid item xs={12}>
-
+                            {/* The Search Bar */}
                         <SearchBar onFormSubmit={this.handleSubmit} />
-
                         </Grid>
+
                         <Grid item xs={8}>
-
+                            {/* Where the video and related information is displayed */}
                             <VideoDetail video={selectedVideo}/>
-
                         </Grid>
-                        <Grid item xs={4}>
 
+                        <Grid item xs={4}>
+                            <VideoList videos={videos} onVideoSelect={this.onVideoSelect} />
                         </Grid>
                     </Grid>
                 </Grid>
